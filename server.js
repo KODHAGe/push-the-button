@@ -57,9 +57,11 @@ var skeletonArray = ["head","neck","torso","r_shoulder","r_elbow","r_wrist","r_h
 var jointsArray = new Array(skeletonArray.length).fill(0);
 var confidenceCount = 0;
 var status = 0;
+var gotKinectInput = false;
 //console.log(jointsArray);
 
 function checkStatus(confidence){
+  if(gotKinectInput){
   if(confidence == 0){
     status = 0;
   } else if(confidence < 15) {
@@ -67,7 +69,13 @@ function checkStatus(confidence){
   } else {
     status = 2;
   }
-  console.log("status: "+status);
+} else {
+  for(var x = 0; x < jointsArray.length; x++){
+    jointsArray[x] = 0;
+  }
+  status = 0;
+}
+console.log("status: "+status);
 }
 
 udpPort.on("ready", function () {
@@ -90,10 +98,12 @@ udpPort.on("message", function (oscMessage) {
   for(var x = 0; x < jointsArray.length; x++){
     confidenceCount += jointsArray[x];
   }
+  gotKinectInput = true;
 });
 
 setInterval(function(){
   checkStatus(confidenceCount);
+  gotKinectInput = false;
 },100);
 
 udpPort.on("error", function (err) {
