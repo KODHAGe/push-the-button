@@ -1,14 +1,36 @@
 <html>
 
+<head>
+  <link href='https://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
+  <style>body{font-family: 'Press Start 2P', cursive;color:white;background-color:#3ac569}
+div {width:100%;text-align:center;}
+#taskHolder{position:fixed;margin-top:50px;}
+#msg{position:fixed;margin-top:100px}
+#timer{position:fixed;margin-top:150px;}</style>
+</head>
+<body>
+
+  <div id="taskHolder">Task <span id="nr">1</span>: <span id="task">Get to the other side</span></div>
+    <div id="msg">NO LIFEFORMS DETECTED</div>
+  <div id="timer"></div>
+
 <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
 <script>
+
+var status = 0,
+    task = 1;
+    timeout = 10,
+    frame = 0;
+
+
 var ws = new WebSocket("ws://localhost:8080");
 
 ws.onopen = function(ev) {
   console.log('Connection opened.');
 }
 ws.onmessage = function(ev) {
-  console.log(ev);
+  console.log(ev.data);
+  status = ev.data;
 }
 ws.onclose = function(ev) {
   console.log('Connection closed.');
@@ -17,5 +39,54 @@ ws.onerror = function(ev) {
   console.log('An error occurred. Sorry for that.');
 }
 
+var taskArray = ["Get to the other side", "Use any prop", "Find a friend, get to the other side together"]
+
+function countdown(){
+    if(frame%6 == 0){
+      console.log("hi");
+      timeout-- ;
+      $("#timer").html("RESET IN: <span>"+timeout+"</span>");
+      if(timeout == 0){
+        status = 0;
+        $("#timer").html("");
+        timeout = 10;
+      }
+    }
+}
+
+function reset(){
+  if(status == 0){
+  $('body').css('background-color','#3ac569');
+  $("#msg").html("NO LIFEFORMS DETECTED");
+  } else if(status == 1){
+     $('body').css('background-color','#EFDC05');
+  $("#msg").html("ALERT: MOVEMENT DETECTED");
+  } else if(status == 2){
+     $('body').css('background-color','#E53A40');
+  $("#msg").html("LIFEFORM DETECTED: ELIMINATING");
+countdown();
+  }
+}
+
+$('body').keyup(function(e){
+   if(e.keyCode == 32 && status == 0){
+     status++;
+   }else if(e.keyCode == 32 && status == 1){
+     status++;
+  } else if(e.keyCode == 13 && status == 0){
+    task++;
+    console.log(task);
+    $("#task").html(taskArray[task-1]);
+    $("#nr").html(task);
+  }
+});
+
+setInterval(function(){
+
+  reset(status);
+  frame++;
+},100)
+
 </script>
+</body>
 </html>
