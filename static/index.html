@@ -1,0 +1,21 @@
+<html>
+
+<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+<script>
+var ws = new WebSocket("ws://localhost:8080");
+
+ws.onopen = function(ev) {
+  console.log('Connection opened.');
+}
+ws.onmessage = function(ev) {
+  console.log(ev);
+}
+ws.onclose = function(ev) {
+  console.log('Connection closed.');
+}
+ws.onerror = function(ev) {
+  console.log('An error occurred. Sorry for that.');
+}
+
+</script>
+</html>
