@@ -69,6 +69,8 @@ var conn;
 //console.log(jointsArray);
 
 function checkStatus(confidence) {
+  //for demo
+  //gotKinectInput = true;
   if (gotKinectInput) {
     if (confidence == 0) {
       status = 0;
@@ -110,6 +112,8 @@ udpPort.on("message", function(oscMessage) {
 });
 
 setInterval(function() {
+  //for demo
+  //confidenceCount = demo();
   checkStatus(confidenceCount);
   if (conn) {
     conn.send(JSON.stringify(status));
@@ -127,6 +131,28 @@ wss.on('connection', function connection(ws) {
 udpPort.on("error", function(err) {
   console.log(err);
 });
+
+
+// for demo
+var demoI = 0;
+var rot = false;
+
+function demo() {
+  console.log(rot);
+  if (demoI < 21 && rot == false) {
+    demoI++;
+    return demoI;
+  } else if (demoI > 20 && rot == false) {
+    rot = true;
+    return demoI;
+  } else if (demoI < 1 && rot == true) {
+    rot = false;
+    return demoI;
+  } else {
+    demoI--;
+    return demoI;
+  }
+}
 
 
 /*var WebSocketServer = require('ws').Server
