@@ -29,10 +29,13 @@ var getIPAddresses = function() {
   return ipAddresses;
 };
 
+console.log(getIPAddresses);
 var udpPort = new osc.UDPPort({
   localAddress: "0.0.0.0",
   localPort: 7110
 });
+
+
 
 // all skeleton joints (kinectsdk 1.8)
 var head,
@@ -134,7 +137,7 @@ udpPort.on("error", function(err) {
 
 
 // for demo
-var demoI = 0;
+/*var demoI = 0;
 var rot = false;
 
 function demo() {
@@ -152,7 +155,7 @@ function demo() {
     demoI--;
     return demoI;
   }
-}
+}/*
 
 
 /*var WebSocketServer = require('ws').Server

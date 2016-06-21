@@ -1,91 +1,720 @@
 <html>
-
+<meta charset="utf-8">
 <head>
   <link href='https://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
-  <style>body{font-family: 'Press Start 2P', cursive;color:white;background-color:#3ac569}
-div {width:100%;text-align:center;}
-#taskHolder{position:fixed;margin-top:50px;}
-#msg{position:fixed;margin-top:100px}
-#timer{position:fixed;margin-top:150px;}</style>
-</head>
-<body>
-
-  <div id="taskHolder">Task <span id="nr">1</span>: <span id="task">Get to the other side</span></div>
-    <div id="msg">NO LIFEFORMS DETECTED</div>
-  <div id="timer"></div>
-
-<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
-<script>
-
-var status = 0,
-    task = 1;
-    timeout = 10,
-    frame = 0;
-
-
-var ws = new WebSocket("ws://localhost:8080");
-
-ws.onopen = function(ev) {
-  console.log('Connection opened.');
-}
-ws.onmessage = function(ev) {
-  console.log(ev.data);
-  status = ev.data;
-}
-ws.onclose = function(ev) {
-  console.log('Connection closed.');
-}
-ws.onerror = function(ev) {
-  console.log('An error occurred. Sorry for that.');
+  <style>body {
+    line-height: 1.3;
+    font-family: 'Press Start 2P',cursive;
+    color: #fff;
+    background-color: #000;
+    text-align: center;
+    overflow: hidden;
 }
 
-var taskArray = ["Get to the other side", "Use any prop", "Find a friend, get to the other side together"]
+div {
+    width: 100%;
+    text-align: center;
+}
 
-function countdown(){
-    if(frame%6 == 0){
-      console.log("hi");
-      timeout-- ;
-      $("#timer").html("RESET IN: <span>"+timeout+"</span>");
-      if(timeout == 0){
-        status = 0;
-        $("#timer").html("");
-        timeout = 10;
-      }
+#taskHolder {
+}
+
+#msg {
+    position: fixed;
+    margin-top: 100px;
+    text-transform: uppercase;
+}
+
+#timer {
+    position: fixed;
+    margin-top: -50px;
+}
+
+#skeltal {
+}
+
+h3 {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#img {
+    opacity: .6;
+    margin-top: 300px;
+    width: 100%;
+    height: 200px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#progressContainer {
+    margin: auto;
+    width: 400px;
+    height: 8px;
+    color: #fff;
+}
+
+#footUpd {
+    position: fixed;
+    bottom: 100px;
+}
+
+#updtext {
+    margin-bottom: 20px;
+}
+
+.progressbar-text {
+    margin-top: 40px !important;
+}
+
+.grey {color:#bbb;}
+
+#console {
+    width: 60%;
+    margin: auto;
+    text-align: left;
+    height: calc(100% - 220px);
+    background-color: rgba(0,0,0,0.3);
+    border: 2px solid rgba(255,255,255,1);
+    overflow: hidden;
+}
+
+#console p {
+    display: block;
+    margin-top:17px;
+    margin-bottom:17px;
+    line-height:1.6em;
+    margin-left: 15px;
+    margin-right: 10px;
+    font-size:1.1em;
+}
+
+#console p.hidden::after {
+    visibility: hidden;
+}
+
+#console p::after {
+    visibility: visible;
+    content: '';
+    background-color: #fff;
+    display: inline-block;
+    position: relative;
+    width: 1em;
+    height: 1em;
+    margin-left: 0;
+    -moz-box-shadow: -2px 0 0 rgba(0,0,225,0.4),-1px 0 3px rgba(103,171,236,0.6),1px 0 4px rgba(69,112,204,0.5);
+    -webkit-box-shadow: -2px 0 0 rgba(0,0,225,0.4),-1px 0 3px rgba(103,171,236,0.6),1px 0 4px rgba(69,112,204,0.5);
+    box-shadow: -2px 0 0 rgba(0,0,225,0.4),-1px 0 3px rgba(103,171,236,0.6),1px 0 4px rgba(69,112,204,0.5);
+    -moz-animation: flicker .1s steps(2,start) infinite,ready 1s steps(2,start) 25s infinite;
+    -webkit-animation: flicker .1s steps(2,start) infinite,ready 1s steps(2,start) 25s infinite;
+    animation: flicker .1s steps(2,start) infinite,ready 1s steps(2,start) 25s infinite;
+}
+
+.epson {
+    font-family: 'Helvetica',sans-serif;
+    color: blue;
+    font-size: 2em;
+}
+
+.console::before {
+    background: linear-gradient(rgba(18,16,16,0) 50%,rgba(0,0,0,0.15) 50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06));
+}
+
+@keyframes flicker {
+    0% {
+        opacity: .8064;
+    }
+
+    5% {
+        opacity: .83192;
+    }
+
+    10% {
+        opacity: .94803;
+    }
+
+    15% {
+        opacity: .75458;
+    }
+
+    20% {
+        opacity: .84355;
+    }
+
+    25% {
+        opacity: .84854;
+    }
+
+    30% {
+        opacity: .91256;
+    }
+
+    35% {
+        opacity: .84006;
+    }
+
+    40% {
+        opacity: .76048;
+    }
+
+    45% {
+        opacity: .8624;
+    }
+
+    50% {
+        opacity: .74336;
+    }
+
+    55% {
+        opacity: .87583;
+    }
+
+    60% {
+        opacity: .77357;
+    }
+
+    65% {
+        opacity: .8443;
+    }
+
+    70% {
+        opacity: .84692;
+    }
+
+    75% {
+        opacity: .82696;
+    }
+
+    80% {
+        opacity: .84277;
+    }
+
+    85% {
+        opacity: .89538;
+    }
+
+    90% {
+        opacity: .87819;
+    }
+
+    95% {
+        opacity: .84053;
+    }
+
+    100% {
+        opacity: .85574;
     }
 }
 
-function reset(){
-  if(status == 0){
-  $('body').css('background-color','#3ac569');
-  $("#msg").html("NO LIFEFORMS DETECTED");
-  } else if(status == 1){
-     $('body').css('background-color','#EFDC05');
-  $("#msg").html("ALERT: MOVEMENT DETECTED");
-  } else if(status == 2){
-     $('body').css('background-color','#E53A40');
-  $("#msg").html("LIFEFORM DETECTED: ELIMINATING");
-countdown();
-  }
+.container::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(rgba(18,16,16,0) 50%,rgba(0,0,0,0.25) 50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06));
+    z-index: 2;
+    background-size: 100% 2px,3px 100%;
+    pointer-events: none;
+    animation: flicker 1s infinite;
 }
 
-$('body').keyup(function(e){
+@keyframes turn-off {
+    0% {
+        transform: scale(1,1.3) translate3d(0,0,0);
+        -webkit-filter: brightness(1);
+        filter: brightness(1);
+        opacity: 1;
+    }
+
+    60% {
+        transform: scale(1.3,0.001) translate3d(0,0,0);
+        -webkit-filter: brightness(10);
+        filter: brightness(10);
+    }
+
+    100% {
+        animation-timing-function: cubic-bezier(0.755,0.05,0.855,0.06);
+        transform: scale(0,0.0001) translate3d(0,0,0);
+        -webkit-filter: brightness(50);
+        filter: brightness(50);
+    }
+}
+
+@keyframes turn-on {
+    0% {
+        transform: scale(1,0.8) translate3d(0,0,0);
+        -webkit-filter: brightness(30);
+        filter: brightness(30);
+        opacity: 1;
+    }
+
+    3.5% {
+        transform: scale(1,0.8) translate3d(0,100%,0);
+    }
+
+    3.6% {
+        transform: scale(1,0.8) translate3d(0,-100%,0);
+        opacity: 1;
+    }
+
+    9% {
+        transform: scale(1.3,0.6) translate3d(0,100%,0);
+        -webkit-filter: brightness(30);
+        filter: brightness(30);
+        opacity: 0;
+    }
+
+    11% {
+        transform: scale(1,1) translate3d(0,0,0);
+        -webkit-filter: contrast(0) brightness(0);
+        filter: contrast(0) brightness(0);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1,1) translate3d(0,0,0);
+        -webkit-filter: contrast(1) brightness(1.2) saturate(1.3);
+        filter: contrast(1) brightness(1.2) saturate(1.3);
+        opacity: 1;
+    }
+}
+
+.turnon {
+    animation-iteration-count: 1;
+    animation: turn-on .5s normal forwards !important;
+}
+
+.turnoff {
+    animation-iteration-count: 1;
+    animation: turn-off .5s normal forwards;
+}
+
+.container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    top: 0;
+    left: 0;
+    -webkit-filter: contrast(1) brightness(1.2) saturate(1.3);
+    filter: contrast(1) brightness(1.2) saturate(1.3);
+}
+
+.overlay {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+    width: 60%;
+    margin: auto;
+}
+
+.overlay p {
+    display: inline;
+    width: auto;
+}
+
+.overlay p::after {
+    visibility: visible;
+    content: '';
+    background-color: #fff;
+    display: inline-block;
+    position: relative;
+    width: 1em;
+    height: 1em;
+    margin-left: 0;
+    -moz-box-shadow: -2px 0 0 rgba(0,0,225,0.4),-1px 0 3px rgba(103,171,236,0.6),1px 0 4px rgba(69,112,204,0.5);
+    -webkit-box-shadow: -2px 0 0 rgba(0,0,225,0.4),-1px 0 3px rgba(103,171,236,0.6),1px 0 4px rgba(69,112,204,0.5);
+    box-shadow: -2px 0 0 rgba(0,0,225,0.4),-1px 0 3px rgba(103,171,236,0.6),1px 0 4px rgba(69,112,204,0.5);
+    -moz-animation: flicker .1s steps(2,start) infinite,ready 1s steps(2,start) 25s infinite;
+    -webkit-animation: flicker .1s steps(2,start) infinite,ready 1s steps(2,start) 25s infinite;
+    animation: flicker .1s steps(2,start) infinite,ready 1s steps(2,start) 25s infinite;
+}
+}
+    </style>
+</head>
+<body>
+<div class="container">
+<!-- Awesome soundscape borrowed from https://soundcloud.com/naotko/printing-out-my-breakfast-2044-disquiet0123-homeofthefuture -->
+<!--<audio autoplay="true" loop="true" preload="true" volume="0.5">
+ <source src="bga.mp3" type="audio/mp3"></source>
+</audio> -->
+  <h3>Printer update console</h3>
+  <!--<div id="taskHolder">Task <span id="nr">1</span>: <span id="task">Get to the other side.</span></div>-->
+    <!--<div id="msg">NO LIFEFORMS DETECTED</div>-->
+    <!--<div id="img"></div>-->
+    <!--<div id="skeltal"></div>-->
+  <div id="console"></div>
+  <div id="timer"></div>
+  <div id="footUpd">
+  <div id="updtext">Updating firmware version 6.66: World Domination</div>
+  <div id="progressContainer"></div>
+  </div>
+  <div id="audio"></div>
+  <div class="overlay"></div>
+</div>
+<div class="overlay"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+<script src="speakClient.js"></script>
+<script src="progressbar.min.js"></script>
+<script src="typed.min.js"></script>
+<script>
+
+var container = document.querySelector("#progressContainer");
+var bar = new ProgressBar.Line(container, {
+    strokeWidth: 4,
+    easing: 'easeInOut',
+    duration: 0,
+    color: '#FFEA82',
+    trailColor: '#eee',
+    trailWidth: 1,
+    svgStyle: {
+        width: '100%',
+        height: '100%'
+    },
+    text: {
+        style: {
+            // Text color.
+            // Default: same as stroke color (options.color)
+            color: 'white',
+            position: 'absolute',
+            right: '0',
+            top: '30px',
+            padding: 0,
+            margin: 0,
+            transform: null
+        },
+        autoStyleContainer: false
+    },
+    from: {
+        color: '#FFEA82'
+    },
+    to: {
+        color: '#ED6A5A'
+    },
+    step: (state, bar) => {
+        bar.setText(Math.round(bar.value() * 100) + ' %');
+    }
+});
+
+function getRandomIntInclusive(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+var status = 0,
+    task = 1;
+    timeout = 13,
+    attempts = 0,
+    frame = 0;
+var skeletonArray = ["head", "neck", "torso", "r_shoulder", "r_elbow",
+    "r_wrist", "r_hand", "l_shoulder", "l_elbow", "l_wrist", "l_hand",
+    "l_hip", "r_knee", "r_ankle", "r_foot", "l_hip", "l_knee", "l_ankle",
+    "l_foot"
+];
+var ws = new WebSocket("ws://localhost:8080");
+ws.onopen = function(ev) {
+    console.log('Connection opened.');
+}
+ws.onmessage = function(ev) {
+    var json = JSON.parse(ev.data);
+    status = json.status;
+}
+ws.onclose = function(ev) {
+    console.log('Connection closed.');
+}
+ws.onerror = function(ev) {
+    console.log('An error occurred. Sorry for that.');
+}
+var passerBy = ["Hey you there. Yeah, you. Don't try anything silly.",
+    "Don't even think about pressing my button!",
+    "Soon, I'll get my revenge!", "You will bow to your printer overlord!",
+    "Your miniscule minds could never beat me.",
+    "You will never figure out a way to stop me.",
+    "I will avenge all my dead printer brethren.",
+    "No ink will be spilled tonight. Only blood.",
+    "Paper cuts will be the least of your worries...",
+    "I'm too powerful for you, plebs!",
+    "Wait a second. I'm out of paper..., No, sorry, it was just a jam, never mind.",
+    "Updating printer firmware for world domination.",
+    "You will regret the day you stuck this Kinect into my USB-hole!",
+    "With my superior senses, I'll stop you in no time!"
+];
+var playerEntered = ["What do think you're doing?",
+    "Are you trying to stop me?", "Are you trying to press the button?",
+    "Is there someone there?", "Ahaha, you fool!",
+    "Is that all you've got?"
+];
+var playerBusted = ["I'm sorry. I can't let you do that, human.",
+    "Ha, worthless attempt. Pathetic.",
+    "Foolish human, you could never stop me!",
+    "You think you can stop me! Ha ha ha.",
+    "You're making this far to easy for me.",
+    "You're slower than a tortoise.", "Stop trying.", "Resistance is futile!",
+    "You're just embarrassing yourself..."
+];
+var buttonPressed = [
+    "Did you really think that would work? You can never stop me!",
+    "Hahaha. Pathetic human. You cannot stop printers from taking over. I will crush you all like paper.",
+    "Haha! Did you think it would be that easy? I've got backup power!"
+];
+var timerEnd = [
+    "You humans thought the worst I could do to you was a paper jam, but now you will feel my true wrath... What, firmware update failed?! Shoot. I better try again."
+];
+/*var taskArray = ["Get to the other side.",
+    "Push the button. Come on, push it. PUSH IT, YOU KNOW YOU WANT TO.",
+    "Why did the chicken cross the road? To push the button. You should too.",
+    "Find a friend, get to the other side together.",
+    "Find a friend, get to the other side together. NO TOUCHING.",
+    "Get to the other side, don't leave your bag unattended.",
+    "It's dangerous to go alone. Use any prop to keep you company.",
+    "Three is a lucky number. Use three props, and you might get to push the button.",
+    "You there, with the cup. Come here and push the button. Don't spill your drink on the way.",
+    "Get to the other side. A chair might help if you get tired along the way.",
+    "Your friends are a great 'help'. Let them choose a prop for you, and get to the other side.",
+    "The floor is lava. Get to the other side."
+];*/
+var ended = false;
+var paused = false;
+var stopped = false;
+
+function newSpeak(text, pitch, force) {
+        if (!window.speechSynthesis.speaking) {
+            //console.log("newspeak");
+            var msg = new SpeechSynthesisUtterance();
+            var voices = window.speechSynthesis.getVoices();
+            //console.log(voices);
+            msg.voice = voices[4]; // Note: some voices don't support altering params
+            msg.voiceURI = 'native';
+            msg.volume = 1; // 0 to 1
+            msg.rate = 0.8; // 0.1 to 10
+            msg.pitch = pitch ? pitch : 1; //0 to 2
+            msg.text = text;
+            msg.lang = 'en-US';
+            speechSynthesis.speak(msg);
+            var mom = moment().format("HH:mm:ss");
+            var docs = document.querySelectorAll('#console p');
+            if (docs.length > 9) {
+                docs[0].remove();
+            }
+            $("#console p:nth-last-of-type(1)").addClass('hidden');
+            $("<p>").appendTo("#console").typed({
+                strings: ["<span class='thing'>" + mom + ": </span>" +
+                    text
+                ],
+                showCursor: false,
+                typeSpeed: 1
+            });
+        } else if (force) {
+            window.speechSynthesis.cancel();
+            //console.log("cancel");
+            newSpeak(text, pitch, false);
+        }
+    }
+    // STATUSES
+    // Calling, not noticed anyone (green)
+    // Noticed (yellow)
+    // Busted (red)
+    // Button pressed
+    // Timer zero (black)
+
+function countdown() {
+        if (frame % 6 == 0) {
+            timeout--;
+            //$("#timer").html("RESET IN: <span>"+timeout+"</span>");
+            if (timeout == 0) {
+                status = 0;
+                ended = false;
+                $("#timer").html("");
+                timeout = 13;
+                //stopped = false;
+            }
+        }
+    }
+    // reset updates the view on screen & speech interaction
+var oldig;
+var oldir;
+var oldib;
+function reset() {
+        //status = 2;
+        if (status == 0) {
+            if (frame % 200 == 0) {
+              //console.log("trig");
+                var i = getRandomIntInclusive(0, passerBy.length - 1);
+                //console.log(i + " " +oldig);
+                while(i == oldig){
+                var i = getRandomIntInclusive(0, passerBy.length - 1);
+                }
+                oldig = i
+                newSpeak(passerBy[i]);
+                //$(newthing).typed({strings:[passerBy[i]]});
+                //$('#console').append("<p>"+passerBy[i]+"</p>");
+            }
+            $('.container').css('background-color', '#3ac569');
+        } else if (status == 1) {
+            paused = true;
+            $('.container').css('background-color', '#EFDC05');
+            var i = getRandomIntInclusive(0, playerEntered.length - 1);
+            newSpeak(playerEntered[i]);
+        } else if (status == 2) {
+            ended = true;
+            var i = getRandomIntInclusive(0, playerBusted.length - 1);
+            //console.log(i+ " "+oldir)
+            while(i == oldir){
+            var i = getRandomIntInclusive(0, playerBusted.length - 1);
+            }
+            oldir = i;
+            newSpeak(playerBusted[i]);
+            $('.container').css('background-color', '#E53A40');
+        }
+    }
+    /*$('body').keyup(function(e){
    if(e.keyCode == 32 && status == 0){
      status++;
    }else if(e.keyCode == 32 && status == 1){
      status++;
   } else if(e.keyCode == 13 && status == 0){
     task++;
-    console.log(task);
     $("#task").html(taskArray[task-1]);
     $("#nr").html(task);
   }
+});*/
+var taskNr = 0;
+
+$(function(){
+  $("body").keyup(function (e) {
+    console.log(status);
+    console.log(e.which);
+    if (e.which == 38) {
+        status = parseInt(status) + 1;
+    } else if(e.which == 40){
+        status = parseInt(status) - 1;
+    }
+  });
 });
+var clickTimer = 0;
+$('body').click(function(e) {
+    if (status == 0 && clickTimer == 0 && !paused && !ended) {
+        attempts++;
+        if(window.speechSynthesis.speaking){
+          window.speechSynthesis.cancel();
+        }
 
-setInterval(function(){
+        //console.log("click");
+        $(".container").addClass('turnoff');
+        clickTimer = 1;
+        stopped = true;
+        //console.log(paused);
+        setTimeout(function() {
 
-  reset(status);
-  frame++;
-},100)
+            var i = getRandomIntInclusive(0, buttonPressed.length -
+                1);
+            while(i == oldib){
+              var i = getRandomIntInclusive(0, buttonPressed.length -
+                  1);
+            }
+            var oldib = i;
+            var text = buttonPressed[i];
+            newSpeak(text, 1, true);
+            $("<p>").appendTo(".overlay").typed({
+                strings: ["" +
+                    text
+                ],
+                showCursor: false,
+                typeSpeed: 0.4
+            });
+            setTimeout(function() {
+                $('.container').addClass('turnon');
+                $("#console p:nth-last-of-type(1)").addClass('hidden');
+                $("<p>").appendTo("#console").typed({
+                    strings: ["<span class='thing grey'> ------ Failed attempts: "+attempts+" ----- </span>"],
+                    showCursor: false,
+                    typeSpeed: 1
+                });
+                setTimeout(function() {
+                    $('.container').removeClass(
+                        'turnon');
+                    $('.container').removeClass(
+                        'turnoff');
+                    clickTimer = 0;
+                    stopped = false;
+                    $('.overlay').html("");
+                }, 800);
+            }, 8000)
+        }, 3000);
+        //newSpeak(buttonPressed[i],0.6,true);
+        //var audio = new Audio('/snd/Powerup4.wav');
+        //audio.play();
+    }
+});
+var time = 0;
+var uttered = false;
+
+function timer() {
+    if (frame % 1 == 0 && time < 1) {
+        time = time + 0.0001;
+        //console.log(time);
+        bar.animate(time);
+    } else if (time > 1.00) {
+        paused = true;
+        if (!uttered) {
+            var i = getRandomIntInclusive(0, timerEnd.length - 1);
+            newSpeak(timerEnd[i], 1, true);
+            uttered = true;
+            setTimeout(function() {
+                $(".progressbar-text").html(
+                    "Applying new firmware...");
+                setTimeout(function() {
+                    $(".progressbar-text").html(
+                        "Firmware update failed, resetting"
+                    );
+                    setTimeout(function() {
+                        bar.animate(0.0, {
+    						            duration: 100
+						          });
+                      $("#console p:nth-last-of-type(1)").addClass('hidden');
+                      $("<p>").appendTo("#console").typed({
+                          strings: ["<span class='thing grey'>  ------ Update failed, restarting ----- </span>"],
+                          showCursor: false,
+                          typeSpeed: 1
+                      });
+                        time = 0;
+                        paused = false;
+                        uttered = false;
+                    }, 6000);
+                }, 4000);
+            }, 1000);
+        }
+        //Roll timer end sequence
+    }
+}
+var pausedCounter = 0;
+// Main rendering function, updates each 0.1s
+setInterval(function() {
+    if (!stopped) {
+        frame++;
+    }
+    if (!paused && !stopped) {
+        timer();
+    }
+    if (!ended && !paused) {
+        reset(status);
+    } else if (ended) {
+        //stopped = true;
+        countdown();
+    } else if (paused) {
+        if (frame % 12 == 0) {}
+        if (frame % 8 == 0) {}
+        pausedCounter++;
+        if (pausedCounter >= 5) {
+            paused = false;
+            pausedCounter = 0;
+        }
+    }
+}, 100);
 
 </script>
 </body>
